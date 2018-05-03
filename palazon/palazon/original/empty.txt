@@ -1,0 +1,9 @@
+#shift original
+mv /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/doctype/sales_order/sales_order.py /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original
+
+#shift modified
+mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/sales_order.py /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/doctype/sales_order
+
+
+#shift report
+mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/test /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format

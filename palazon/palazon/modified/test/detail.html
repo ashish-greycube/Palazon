@@ -1,0 +1,97 @@
+<!-- {%- from "templates/print_formats/standard_macros.html" import add_header, render_field -%} -->
+
+<table class="table table-bordered table-condensed">
+        <tbody>
+            <tr>
+                <th class="table-sr">Sr</th>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Unit</th>
+                <th class="text-right">Rate</th>
+                <th class="text-right">Amt SGD</th>
+            </tr>
+            {% for row in doc.items %} 
+    
+            <tr >
+                <td style="width: 2%;">{{ row.idx }}</td>
+                <td style="width: 30%;">
+                    {{ row.item_name }} {% if row.item_code != row.item_name -%}
+                    <br>Item Code: {{ row.item_code}} {%- endif %}
+                </td>
+                <td style="width: 26%;">
+                    <div style="border: 0px;">{{ row.description }}</div>
+                </td>
+                <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
+                <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
+                <td style="width: 15%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
+                <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+            </tr>
+         {% endfor %}
+        </tbody>
+    </table>
+    
+<div>
+    <p class="h6">
+        <b>Exploded BOM</b>
+    </p>
+</div>
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <th class="table-sr">Sr</th>
+            <th class="table-sr">#</th>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Amt SGD</th>
+            <!-- <th class="text-right">MPN</th>
+                        <th class="text-right">Manufacturer</th> -->
+        </tr>
+        {% for row in doc.items %} {% if row.detail_id > 0%}
+
+        <tr bgcolor='#e3e9ed'>
+            <td style="width: 2%;">{{ row.idx }}</td>
+            <td style="width: 2%;"></td>
+            <td style="width: 30%;">
+                {{ row.item_name }} {% if row.item_code != row.item_name -%}
+                <br>Item Code: {{ row.item_code}} {%- endif %}
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ row.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+            <!-- <td style="width: 15%; text-align: right;"></td>
+                                    <td style="width: 15%; text-align: right;"></td>        -->
+        </tr>
+        {% set count = namespace(a=1) %} {% for detail in doc.sales_order_detail_item %} {% if row.detail_id == detail.bom_id %}
+        <tr>
+            <td style="width: 2%;"></td>
+            <td style="width: 2%;">{{ count.a }}</td>
+            <td style="width: 30%;">
+                {{ detail.display_name }}
+                <!-- {{ detail.item_name }}
+                                {% if detail.item_code != detail.item_name -%}
+                                <br>Item Code: {{ detail.item_code}}
+                                {%- endif %} -->
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ detail.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ detail.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
+            <!-- <td style="width: 15%; text-align: right;">{{
+                                        detail.manufacturer_part_no }}</td>
+                                        <td style="width: 15%; text-align: right;">{{
+                                                detail.manufacturer }}</td>            -->
+        </tr>
+        {% set count.a = count.a + 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+    </tbody>
+</table>
