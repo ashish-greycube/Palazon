@@ -6,4 +6,5 @@ mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/sales_order.p
 
 
 #shift report
-mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/test /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format
+mkdir /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format/test
+mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/modified/test /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format/test
