@@ -2,9 +2,9 @@
 mv /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/doctype/sales_order/sales_order.py /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original
 
 #shift modified
-mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/sales_order.py /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/doctype/sales_order
+cp /home/frappe/frappe-bench/apps/palazon/palazon/palazon/original/sales_order.py /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/doctype/sales_order
 
 
 #shift report
 mkdir /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format/test
-mv /home/frappe/frappe-bench/apps/palazon/palazon/palazon/modified/test /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format/test
+cp /home/frappe/frappe-bench/apps/palazon/palazon/palazon/modified/test /home/frappe/frappe-bench/apps/erpnext/erpnext/selling/print_format/test
