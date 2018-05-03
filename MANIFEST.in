@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include palazon *.css
+recursive-include palazon *.csv
+recursive-include palazon *.html
+recursive-include palazon *.ico
+recursive-include palazon *.js
+recursive-include palazon *.json
+recursive-include palazon *.md
+recursive-include palazon *.png
+recursive-include palazon *.py
+recursive-include palazon *.svg
+recursive-include palazon *.txt
+recursive-exclude palazon *.pyc
