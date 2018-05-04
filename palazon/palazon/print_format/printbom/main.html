@@ -1,0 +1,32 @@
+{% if doc.items|length > 1 %}
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <th class="table-sr">Sr</th>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Amt SGD</th>
+        </tr>
+        {% for row in doc.items %}
+
+        <tr>
+            <td style="width: 2%;">{{ row.idx }}</td>
+            <td style="width: 30%;">
+                {{ row.item_name }} {% if row.item_code != row.item_name -%}
+                <br>Item Code: {{ row.item_code}} {%- endif %}
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ row.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
