@@ -1,160 +1,89 @@
-{%- from "palazon/palazon/print_format/printbom/printbom_macros.html" import add_header,
-	 render_field -%}
-     <head>
-            <style>
-    tr.print-format {
-      background-color: #e3e9ed !important;
-      text-align: left !important;
-      vertical-align: middle !important;
-      width: 25px !important;
-      height: 20px !important;
-      font-size: 14px;
-    }
-            </style>
-            </head>     
-     <div>
-            <p class="h6"><b>Exploded BOM</b></p>
-     </div>
-        <table class="table table-bordered table-condensed">
-                <tbody>
-                    <tr>
-                        <th  class="table-sr">Sr</th>
-                        <th  class="table-sr">#</th>
-                        <th>Item Name</th>
-                        <th>Description</th>
-                        <th class="text-right">Qty</th>
-                        <th class="text-right">Unit</th>
-                        <th class="text-right">Rate</th>
-                        <th class="text-right">Amt SGD</th>
-                        <!-- <th class="text-right">MPN</th>
-                        <th class="text-right">Manufacturer</th> -->
-                    </tr>
-                    {% for row in doc.items %}
-                    {% if row.detail_id > 0%}
+{% if doc.items|length > 1 %}
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <th class="table-sr">Sr</th>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Amt SGD</th>
+        </tr>
+        {% for row in doc.items %}
 
-                    <tr bgcolor='#e3e9ed' >
-                        <td style="width: 3%;">{{ row.idx }}</td>
-                        <td style="width: 3%;"></td>
-                        <td style="width: 30%;">
-                            {{ row.item_name }}
-                            {% if row.item_code != row.item_name -%}
-                            <br>Item Code: {{ row.item_code}}
-                            {%- endif %}
-                        </td>
-                        <td style="width: 27%;">
-                            <div style="border: 0px;">{{ row.description }}</div></td>
-                        <td style="width: 10%; text-align: right;">{{ row.qty }}</td>
-                        <td style="width: 10%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
-                        <td style="width: 15%; text-align: right;">{{
-                            row.get_formatted("rate", doc) }}</td>
-                        <td style="width: 15%; text-align: right;">{{
-                            row.get_formatted("amount", doc) }}</td>
-                            <!-- <td style="width: 15%; text-align: right;"></td>
-                                    <td style="width: 15%; text-align: right;"></td>        -->
-                    </tr>
-                    {% set count = namespace(a=1) %}
-                    {% for detail in doc.sales_order_detail_item %}
-                    {% if row.detail_id == detail.bom_id %}
-                    <tr>
-                            <td style="width: 3%;"></td>
-                            <td style="width: 3%;">{{ count.a }}</td>
-                            <td style="width: 30%;">
-                                    {{ detail.display_name }}
-                                <!-- {{ detail.item_name }}
-                                {% if detail.item_code != detail.item_name -%}
-                                <br>Item Code: {{ detail.item_code}}
-                                {%- endif %} -->
-                            </td>
-                            <td style="width: 27%;">
-                                <div style="border: 0px;">{{ detail.description }}</div></td>
-                            <td style="width: 10%; text-align: right;">{{ detail.qty }} {{ detail.uom or detail.stock_uom }}</td>
-                            <td style="width: 15%; text-align: right;">{{
-                                detail.get_formatted("rate", doc) }}</td>
-                            <td style="width: 15%; text-align: right;">{{
-                                detail.get_formatted("amount", doc) }}</td>
-                                <!-- <td style="width: 15%; text-align: right;">{{
-                                        detail.manufacturer_part_no }}</td>
-                                        <td style="width: 15%; text-align: right;">{{
-                                                detail.manufacturer }}</td>            -->
-                        </tr>
-                        {% set count.a = count.a + 1 %}
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}    
+        <tr>
+            <td style="width: 2%;">{{ row.idx }}</td>
+            <td style="width: 30%;">
+                {{ row.item_name }} {% if row.item_code != row.item_name -%}
+                <br>Item Code: {{ row.item_code}} {%- endif %}
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ row.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 
-                        {% endfor %}
-                </tbody>
-            </table>
+{% if doc.sales_order_detail_item|length > 1 %}
+<div>
+    <p class="h6">
+        <b>Exploded BOM</b>
+    </p>
+</div>
 
 
+<table class="table table-bordered table-condensed">
+    <tbody>
+        <tr>
+            <th class="table-sr">Sr</th>
+            <th class="table-sr">#</th>
+            <th>Item Name</th>
+            <th>Description</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Unit</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Amt SGD</th>
+        </tr>
+        {% for row in doc.items %} {% if row.detail_id > 0%}
 
-
-
-
-
-                <!-- <div class="panel-body">
-                    <div class="row">
-                        <div class=" col-lg-12 col-md-12 col-sm-12 description">
-                            <div class="table-responsive">
-                                <table class="table table-condensed">
-                                    <thead>
-                                        <tr>
-                                            <td class="text-center">
-                                                <strong>Sr</strong>
-                                            </td>
-                                            <td class="">
-                                            
-                                                <strong>Description</strong>
-                                            </td>
-                                            <td class="text-center">
-                                                <strong>Quantity</strong>
-                                            </td>
-                                            <td class="text-center">
-                                                <strong>Price</strong>
-                                            </td>
-                                            <td class="text-right">
-                                                <strong>Amount</strong>
-                                            </td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for row in doc.items %}
-
-                                        {% for detail in doc.sales_order_detail_item %}
-                                        {% if row.idx == detail.bom_id %}
-                                        {% if row.idx==detail.idx %}
-                                        <tr>
-                                                <td class="text-center">{{ row.idx }}</td>
-                                                <td class="">
-                                                    <strong>{{row.item_code}}</strong>
-                                                    <br>
-                                                    <em>
-     
-                                                    </em>
-                                                </td>
-                                                <td class="text-center"><strong>{{ row.qty }}</strong></td>
-                                                <td class="text-center"><strong>{{ row.rate }}</strong></td>
-                                                <td class="text-right"><strong>{{ row.amount}}</strong></td>
-    
-                                            </tr>
-                                            {% endif %}    
-                                        <tr>
-                                            <td class="text-center">{{ detail.bom_id }}</td>
-                                            <td class="">
-                                                <strong>{{detail.item_code}}</strong>
-                                            </td>
-                                            <td class="text-center"><strong>{{ detail.qty }}</strong></td>
-                                            <td class="text-center"><strong>{{ detail.rate }}</strong></td>
-                                            <td class="text-right"><strong>{{ detail.amount}}</strong></td>
-
-                                        </tr>
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div> -->
+        <tr bgcolor='#e3e9ed'>
+            <td style="width: 2%;">{{ row.idx }}</td>
+            <td style="width: 2%;"></td>
+            <td style="width: 30%;">
+                {{ row.item_name }} {% if row.item_code != row.item_name -%}
+                <br>Item Code: {{ row.item_code}} {%- endif %}
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ row.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+        </tr>
+        {% set count = namespace(a=1) %} {% for detail in doc.sales_order_detail_item %} {% if row.detail_id == detail.bom_id %}
+        <tr>
+            <td style="width: 2%;"></td>
+            <td style="width: 2%;">{{ count.a }}</td>
+            <td style="width: 30%;">
+                {{ detail.display_name }}
+            </td>
+            <td style="width: 26%;">
+                <div style="border: 0px;">{{ detail.description }}</div>
+            </td>
+            <td style="width: 5%; text-align: right;">{{ detail.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
+        </tr>
+        {% set count.a = count.a + 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+    </tbody>
+</table>
+{% endif %}

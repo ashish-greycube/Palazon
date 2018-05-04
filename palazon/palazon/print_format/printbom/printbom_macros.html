@@ -1,7 +1,12 @@
 {% macro render_field(df, doc) -%}
 	{%- if df.fieldtype=="Table" -%}
-	{%- if df.fieldname=="items" -%}
-	{{ render_table(df, doc) }}
+	
+	{%- if df.fieldname =="items" -%}
+		{% include 'palazon/palazon/print_format/printbom/detail.html' %}
+		
+	{%- else -%}
+
+<!-- {{ render_table(df, doc) }} -->
 	{%- endif -%}
 	{%- elif df.fieldtype=="HTML" and df.options -%}
 		<div>{{ frappe.render_template(df.options, {"doc": doc}) or "" }}</div>
@@ -64,7 +69,7 @@
 		</div>
 		{%- endif -%}
 	{%- endif -%}
-	 {% include 'palazon/palazon/print_format/printbom/detail.html' %}
+	
 {%- endmacro -%}
 
 {% macro fieldmeta(df) -%}

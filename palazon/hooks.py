@@ -127,5 +127,12 @@ fixtures = [
 			["name", "in", [
 			"Sales Order-Client"]],
 		]
+	},
+	{
+	"dt":"Print Format",
+			"filters":[
+			["name", "in", [
+			"PrintBOM"]],
+		]
 	}
 ]
