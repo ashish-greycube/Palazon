@@ -3,7 +3,7 @@
     <tbody>
         <tr>
             <th class="table-sr">Sr</th>
-            <th>Item Name</th>
+            <th>DWG</th>
             <th>Description</th>
             <th class="text-right">Qty</th>
             <th class="text-right">Unit</th>
@@ -14,12 +14,9 @@
 
         <tr>
             <td style="width: 2%;">{{ row.idx }}</td>
-            <td style="width: 30%;">
-                {{ row.item_name }} {% if row.item_code != row.item_name -%}
-                <br>Item Code: {{ row.item_code}} {%- endif %}
-            </td>
+            <td style="width: 30%;">{{ row.item_code}}</td>
             <td style="width: 26%;">
-                <div style="border: 0px;">{{ row.description }}</div>
+                <div style="border: 0px;">{{ row.item_name }}</div>
             </td>
             <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>

@@ -1,34 +1,29 @@
 {% if doc.sales_order_detail_item|length > 0 %}
 <div>
     <p class="h6">
-        <b>Exploded BOM</b>
+        <b>Sales Order Detail</b>
     </p>
 </div>
 
-
+{% for row in doc.items %} {% if row.detail_id > 0%}
 <table class="table table-bordered table-condensed">
     <tbody>
         <tr>
             <th class="table-sr">Sr</th>
             <th class="table-sr">#</th>
-            <th>Item Name</th>
+            <th>DWG</th>
             <th>Description</th>
             <th class="text-right">Qty</th>
             <th class="text-right">Unit</th>
             <th class="text-right">Rate</th>
             <th class="text-right">Amt SGD</th>
         </tr>
-        {% for row in doc.items %} {% if row.detail_id > 0%}
-
         <tr bgcolor='#e3e9ed'>
-            <td style="width: 2%;">{{ row.idx }}</td>
+            <td style="width: 2%;">{{ loop.index }}</td>
             <td style="width: 2%;"></td>
-            <td style="width: 30%;">
-                {{ row.item_name }} {% if row.item_code != row.item_name -%}
-                <br>Item Code: {{ row.item_code}} {%- endif %}
-            </td>
+            <td style="width: 30%;">{{ row.item_code}}</td>
             <td style="width: 26%;">
-                <div style="border: 0px;">{{ row.description }}</div>
+                <div style="border: 0px;">{{ row.item_name }}</div>
             </td>
             <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
@@ -43,14 +38,17 @@
                 {{ detail.display_name }}
             </td>
             <td style="width: 26%;">
-                <div style="border: 0px;">{{ detail.description }}</div>
+                <div style="border: 0px;">{{ detail.item_name }}</div>
             </td>
             <td style="width: 5%; text-align: right;">{{ detail.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
             <td style="width: 15%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
             <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
         </tr>
-        {% set count.a = count.a + 1 %} {% endif %} {% endfor %} {% endif %} {% endfor %}
+        {% set count.a = count.a + 1 %} {% endif %} {% endfor %}
+        {% endif %}
     </tbody>
 </table>
+<div style="page-break-before: always;"></div>
+{% endfor %}
 {% endif %}
