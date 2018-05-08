@@ -99,7 +99,7 @@ def set_items(self,change_qty=0):
                 item_dict = get_bom_items_as_dict(bom_no, self.company, qty=i.qty,fetch_exploded = 1)
                 
                 # for item in sorted(item_dict.values(), key=lambda d: d['idx']):
-                for item in item_dict.values():
+                for item in sorted(item_dict.values(), cmp=lambda a, b:  a.item_code > b.item_code and 1 or -1 if a.idx == b.idx else  0):
                     if item.idx is None:
                         items_parent=bom_no+":"+item.item_name
                     else:
