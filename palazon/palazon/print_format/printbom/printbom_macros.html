@@ -24,10 +24,10 @@
 
 			{%- for row in doc.taxes -%}
             {%- if not row.included_in_print_rate -%}
-            {% if row.tax_amount > 0  %}
-<b>{{row.description}}</b>
-			<div style="text-align:right">{{row.get_formatted("tax_amount")}}</div>
-				             {%- endif -%} 
+			{% if row.tax_amount > 0  %}			
+				<b>{{row.description}}</b>
+				<div style="float: right;;">{{row.get_formatted("tax_amount")}}</div>
+			{%- endif -%} 
             {%- endif -%}
 		{%- endfor -%} 
 		
