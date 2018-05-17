@@ -5,6 +5,38 @@ import frappe.utils
 from frappe.utils import cstr, flt, getdate, comma_and, cint
 
 #start singapore - exploded bom
+def get_bom_items_as_tree_order(bom="BOM-BOM Whits testing-002",qty=2):
+    bom_list = []
+    def _get_children(bom):
+        # bom_list.append(bom)
+        child_boms = frappe.db.sql("""select
+                bom_item.item_code,
+                item.item_code,
+                item.item_name,
+                item.default_bom,
+                bom_item.bom_no as value,
+                bom_item.qty * %(qty)s as qty,
+                (select item from `tabBOM` where name = bom_item.parent ) as parent,
+                bom_item.bom_no as child, 
+                bom_item.rate,
+                if(ifnull(bom_item.bom_no, "")!="", 1, 0) as expandable,
+                item.image,
+                item.description
+                from `tabBOM Item` bom_item, tabItem item
+                where bom_item.parent=%(bom)s
+                and bom_item.item_code = item.name
+                order by bom_item.idx
+                """, {"qty": qty,"bom": bom }, as_dict=True)
+        for child_bom in child_boms:
+            if child_bom["expandable"] == 1:
+                _get_children(child_bom["value"])
+            else:
+                bom_list.append(child_bom)
+
+    _get_children(bom)
+
+    return bom_list
+
 @frappe.whitelist()
 def set_missing_item_details(self, for_validate=False):
     force_item_fields = ("item_group", "barcode", "brand", "stock_uom")
@@ -95,20 +127,16 @@ def set_items(self,change_qty=0):
             bom_no = get_default_bom_item(i.item_code)
             if bom_no:
                 i.detail_id=i.idx
-                from erpnext.manufacturing.doctype.bom.bom import get_bom_items_as_dict
-                item_dict = get_bom_items_as_dict(bom_no, self.company, qty=i.qty,fetch_exploded = 1)
-                
-                # for item in sorted(item_dict.values(), key=lambda d: d['idx']):
-                for item in sorted(item_dict.values(), cmp=lambda a, b:  a.item_code > b.item_code and 1 or -1 if a.idx == b.idx else  0):
-                    if item.idx is None:
-                        items_parent=bom_no+":"+item.item_name
-                    else:
-                        items_parent=item.item_name
-
-
+                item_dict = get_bom_items_as_tree_order(bom_no,qty=i.qty)
+                for item in item_dict:
+                    # if item.idx is None:
+                    #     items_parent=bom_no+":"+item.item_name
+                    # else:
+                    items_parent=item.item_name
                     self.append('sales_order_detail_item', {
                         'bom_id':i.idx,
                         'display_name':items_parent,
+                        'parent_bom':item.parent,
                         'bom_code':i.item_code,
                         'item_code': item.item_code,
                         'item_name': item.item_name,
