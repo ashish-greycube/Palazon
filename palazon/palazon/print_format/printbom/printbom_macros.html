@@ -22,7 +22,16 @@
 				doc.print_templates.get(df.fieldname) -%}			
 			{% include doc.print_templates[df.fieldname] %}
 
+			{%- for row in doc.taxes -%}
+            {%- if not row.included_in_print_rate -%}
+            {% if row.tax_amount > 0  %}
 
+			<div  class="col-xs-6 column-break "><b>{{row.description}}</b></div>
+				<div  class="col-xs-6 text-right column-break ">  {{row.get_formatted("tax_amount")}}</div>
+
+             {%- endif -%} 
+            {%- endif -%}
+		{%- endfor -%} 
 		
 
 		{%- else -%}			
