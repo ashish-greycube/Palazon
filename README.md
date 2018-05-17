@@ -6,6 +6,17 @@ get BOM Item Rate based on summation of their individual line item
 
 MIT
 
+#### How to do bench update
+~/frappe-bench/apps/erpnext$ git status
+		modified:   erpnext/selling/doctype/sales_order/sales_order.py
+~/frappe-bench/apps/erpnext$ git stash
+
+Once update, is done i.e.
+~/frappe-bench$ bench update
+
+Revert the stash changes back
+~/frappe-bench/apps/erpnext$ git stash pop
+
 #### Changes to be done apps/erpnext/erpnext/selling/doctype/sales_order.py
 
 class SalesOrder(SellingController):
