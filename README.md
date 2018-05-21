@@ -28,3 +28,14 @@ class SalesOrder(SellingController):
 	#end singapore - exploded bom
 	
 	def validate(self):
+
+#### Changes to be done apps/erpnext/erpnext/selling/doctype/quotation.py
+
+
+class Quotation(SellingController):
+
+	#start singapore - exploded bom
+	from palazon.api import set_missing_item_details, set_items_amount, set_items
+	#end singapore - exploded bom
+		
+	def set_indicator(self):

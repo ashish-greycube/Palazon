@@ -38,6 +38,13 @@
 
 </div>
 <!-- <div class="page-break"></div> -->
-	{% include 'palazon/palazon/print_format/printbom/detail.html' %}
+{%- if doc.doctype=='Sales Order' -%}<hr>
+{% include 'palazon/palazon/print_format/printbom/detail.html' %}
+{%- endif -%}
+
+{%- if doc.doctype=='Quotation' -%}<hr>
+{% include 'palazon/palazon/print_format/printbom/quotdetail.html' %}
+{%- endif -%}
+
 {% endfor %}
 

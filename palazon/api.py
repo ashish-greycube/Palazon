@@ -5,7 +5,7 @@ import frappe.utils
 from frappe.utils import cstr, flt, getdate, comma_and, cint
 
 #start singapore - exploded bom
-def get_bom_items_as_tree_order(bom="BOM-BOM Whits testing-002",qty=2):
+def get_bom_items_as_tree_order(bom,qty):
     bom_list = []
     def _get_children(bom):
         # bom_list.append(bom)
@@ -45,7 +45,7 @@ def set_missing_item_details(self, for_validate=False):
     from erpnext.stock.get_item_details import get_item_details
     from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
-    if hasattr(self, "sales_order_detail_item"):
+    if hasattr(self, "quotation_detail_item"):
         parent_dict = {}
         for fieldname in self.meta.get_valid_columns():
             parent_dict[fieldname] = self.get(fieldname)
@@ -54,7 +54,12 @@ def set_missing_item_details(self, for_validate=False):
             document_type = "{} Item".format(self.doctype)
             parent_dict.update({"document_type": document_type})
 
-        for item in self.get("sales_order_detail_item"):
+        if self.doctype == "Quotation":
+            child_bom_table="quotation_detail_item"
+        elif self.doctype == "Sales Order":
+            child_bom_table="sales_order_detail_item"
+
+        for item in self.get(child_bom_table):
             if item.get("item_code"):
                 args = parent_dict.copy()
                 args.update(item.as_dict())
@@ -101,6 +106,12 @@ def set_missing_item_details(self, for_validate=False):
 
 @frappe.whitelist()
 def set_items_amount(self):
+
+    if self.doctype == "Quotation":
+        child_bom_table="quotation_detail_item"
+    elif self.doctype == "Sales Order":
+        child_bom_table="sales_order_detail_item"
+
     for i in self.get('items'):
         if i.item_code:
             amount=0
@@ -109,7 +120,7 @@ def set_items_amount(self):
                 i.rate=0
                 i.amount=0
 
-                for j in self.get('sales_order_detail_item'):
+                for j in self.get(child_bom_table):
                     if j.bom_id==i.idx:
                         amount=amount+j.amount
                 i.rate=amount/i.qty	
@@ -119,12 +130,20 @@ def set_items_amount(self):
 
 @frappe.whitelist()
 def set_items(self,change_qty=0):
-    self.set("sales_order_detail_item",[])
+
+    if self.doctype == "Quotation":
+        child_bom_table="quotation_detail_item"
+    elif self.doctype == "Sales Order":
+        child_bom_table="sales_order_detail_item"
+
+    print("set_items")
+    self.set(child_bom_table,[])
     for i in self.get('items'):
         if i.item_code:
             if i.qty==0:
                 i.qty=1
             bom_no = get_default_bom_item(i.item_code)
+            print(bom_no)
             if bom_no:
                 i.detail_id=i.idx
                 item_dict = get_bom_items_as_tree_order(bom_no,qty=i.qty)
@@ -133,7 +152,7 @@ def set_items(self,change_qty=0):
                     #     items_parent=bom_no+":"+item.item_name
                     # else:
                     items_parent=item.item_name
-                    self.append('sales_order_detail_item', {
+                    self.append(child_bom_table, {
                         'bom_id':i.idx,
                         'display_name':items_parent,
                         'parent_bom':item.parent,
