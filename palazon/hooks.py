@@ -133,7 +133,7 @@ fixtures = [
 	"dt":"Print Format",
 			"filters":[
 			["name", "in", [
-			"PrintBOM"]],
+			"PrintBOM","Quot BOM"]],
 		]
 	}
 ]
