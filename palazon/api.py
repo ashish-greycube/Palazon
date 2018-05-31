@@ -17,6 +17,7 @@ def get_bom_items_as_tree_order(bom,qty):
                 bom_item.bom_no as value,
                 bom_item.qty * %(qty)s as qty,
                 (select item from `tabBOM` where name = bom_item.parent ) as parent,
+                 (select uom from `tabBOM` where name = bom_item.parent ) as puom,
                 bom_item.bom_no as child, 
                 bom_item.rate,
                 if(ifnull(bom_item.bom_no, "")!="", 1, 0) as expandable,
@@ -144,7 +145,6 @@ def set_items(self,change_qty=0):
             if i.qty==0:
                 i.qty=1
             bom_no = get_default_bom_item(i.item_code)
-            print(bom_no)
             if bom_no:
                 i.detail_id=i.idx
                 item_dict = get_bom_items_as_tree_order(bom_no,qty=i.qty)
@@ -158,6 +158,7 @@ def set_items(self,change_qty=0):
                         'display_name':items_parent,
                         'parent_bom':item.parent,
                         'parent_qty':i.qty,
+                        'parent_uom':item.puom,
                         'bom_code':i.item_code,
                         'item_code': item.item_code,
                         'item_name': item.item_name,

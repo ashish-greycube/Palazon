@@ -30,10 +30,9 @@
             <td style="width: 12%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
             <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
         </tr>
-        {% set v_global = [0.0] %}
         {% set count = namespace(a=1) %} {% for detail in doc.sales_order_detail_item %} {% if row.detail_id == detail.bom_id %}
         {% if (loop.changed(detail.parent_bom) and not(outerrowloop.changed(row.item_code))) %}
-
+        {% set v_global = [0.0] %}
         {% set count.a = 1 %}
         {% if loop.index != 1 %}
         {% for sub_bom_detail in doc.sales_order_detail_item %}
