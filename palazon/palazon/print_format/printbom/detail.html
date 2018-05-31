@@ -4,8 +4,8 @@
         <b>Sales Order Detail</b>
     </p>
 </div>
-
 {% for row in doc.items %} {% if row.detail_id > 0%}
+{% set outerrowloop = loop %}
 <table class="table table-bordered table-condensed">
     <tbody>
         <tr>
@@ -14,25 +14,52 @@
             <th>Parent</th>
             <th>DWG</th>
             <th>DWG Name</th>
-            <th class="text-right" >Qty</th>
+            <th class="text-right">Qty</th>
             <th class="text-right">Unit</th>
             <th class="text-right">Rate</th>
             <th class="text-right">Amt SGD</th>
         </tr>
-        <tr  style="background-color:#76a1cc !important;font-weight: bold;"  >
+        <tr style="background-color:rgba(201, 235, 245, 0.979) !important;font-weight: bold;">
             <td style="width: 2%;">{{ loop.index }}</td>
             <td style="width: 2%;"></td>
             <td style="width: 15%;">MAIN BOM</td>
             <td style="width: 20%;">{{ row.item_code}}</td>
             <td style="width: 24%;">{{ row.item_name }}</td>
-            <td style="width: 5%; text-align: right;" >{{ row.qty }}</td>
+            <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
             <td style="width: 12%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
             <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
         </tr>
+        {% set v_global = [0.0] %}
         {% set count = namespace(a=1) %} {% for detail in doc.sales_order_detail_item %} {% if row.detail_id == detail.bom_id %}
-        {% if loop.changed(detail.parent_bom) %}
-        <tr style="background-color:#e3e9ed!important;font-weight: bold;">
+        {% if (loop.changed(detail.parent_bom) and not(outerrowloop.changed(row.item_code))) %}
+
+        {% set count.a = 1 %}
+        {% if loop.index != 1 %}
+        {% for sub_bom_detail in doc.sales_order_detail_item %}
+            {% if sub_bom_detail.parent_bom == detail.parent_bom %}
+                {% if v_global.append(v_global.pop()+ sub_bom_detail.amount|float) -%}{% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if detail.parent_qty == 0%} 
+        {% set parent_qty = 1 %}
+        {% else %}
+        {% set parent_qty = detail.parent_qty %}
+        {% endif %}
+        <tr style="background-color:rgb(235, 232, 232)!important;font-weight: bold;">
+                <td style="width: 2%;"></td>
+                <td style="width: 2%;">*</td>
+                <td style="width: 15%;">{{ doc.sales_order_detail_item[loop.index-2].parent_bom }}</td>
+                <td style="width: 20%;">{{ detail.parent_bom}}</td>
+                <td style="width: 24%;">{{ detail.parent_bom }}</td>
+                <td style="width: 5%; text-align: right;">{{ parent_qty }}</td>
+                <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
+                <td style="width: 12%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0]/parent_qty,currency="$") }}</td>
+                <td style="width: 15%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0],currency="$") }}</td>
+            </tr>
+        {% endif %}
+
+        <tr>
             <td style="width: 2%;"></td>
             <td style="width: 2%;">{{ count.a }}</td>
             <td style="width: 15%;">{{ detail.parent_bom}}</td>
@@ -44,7 +71,7 @@
             <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
         </tr>
         {% else %}
-        <tr >
+        <tr>
             <td style="width: 2%;"></td>
             <td style="width: 2%;">{{ count.a }}</td>
             <td style="width: 15%;">{{ detail.parent_bom}}</td>
@@ -55,12 +82,8 @@
             <td style="width: 12%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
             <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
         </tr>
-        {% endif %}
-
-        {% set count.a = count.a + 1 %} {% endif %} {% endfor %}
-        {% endif %}
+        {% endif %} {% set count.a = count.a + 1 %} {% endif %} {% endfor %} {% endif %}
     </tbody>
 </table>
 <div style="page-break-before: always;"></div>
-{% endfor %}
-{% endif %}
+{% endfor %} {% endif %}

@@ -45,7 +45,13 @@ def set_missing_item_details(self, for_validate=False):
     from erpnext.stock.get_item_details import get_item_details
     from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
 
-    if hasattr(self, "quotation_detail_item"):
+    if self.doctype == "Quotation":
+        child_bom_table="quotation_detail_item"
+    elif self.doctype == "Sales Order":
+        child_bom_table="sales_order_detail_item"
+
+
+    if hasattr(self, child_bom_table):
         parent_dict = {}
         for fieldname in self.meta.get_valid_columns():
             parent_dict[fieldname] = self.get(fieldname)
@@ -53,11 +59,6 @@ def set_missing_item_details(self, for_validate=False):
         if self.doctype in ["Quotation", "Sales Order"]:
             document_type = "{} Item".format(self.doctype)
             parent_dict.update({"document_type": document_type})
-
-        if self.doctype == "Quotation":
-            child_bom_table="quotation_detail_item"
-        elif self.doctype == "Sales Order":
-            child_bom_table="sales_order_detail_item"
 
         for item in self.get(child_bom_table):
             if item.get("item_code"):
@@ -156,6 +157,7 @@ def set_items(self,change_qty=0):
                         'bom_id':i.idx,
                         'display_name':items_parent,
                         'parent_bom':item.parent,
+                        'parent_qty':i.qty,
                         'bom_code':i.item_code,
                         'item_code': item.item_code,
                         'item_name': item.item_name,
