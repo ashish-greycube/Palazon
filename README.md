@@ -4,9 +4,9 @@
 **Description** - Get BOM Item Rate based on summation of their individual line item for Sales Order and Quotation. Custom Print format which shows sub bom leaf items.
 
 ## How to install app
--[] Go to bench directory i.e  /home/ubuntu/frappe-bench
--[] ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
--[] ~/frappe-bench$   bench --site site1.local install-app palazon
+- [ ] Go to bench directory i.e  /home/ubuntu/frappe-bench
+- [ ] ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
+- [ ] ~/frappe-bench$   bench --site site1.local install-app palazon
 
 #### Edit sales_order.py and quotation.py
 Following line is to be added to sales_order.py and quotation.py
@@ -19,8 +19,8 @@ Following line is to be added to sales_order.py and quotation.py
 ```
 ---
 apps/erpnext/selling/doctype/sales_order/sales_order.py
-![Image](before.so.png)
-![Image](after.so.png)
+![Image](before_so.png)
+![Image](after_so.png)
 ```
 class SalesOrder(SellingController):
 	def __init__(self, *args, **kwargs):
@@ -35,8 +35,8 @@ class SalesOrder(SellingController):
 
 ```
 apps/erpnext/erpnext/selling/doctype/quotation.py
-![Image](before.qo.png)
-![Image](after.qo.png)
+![Image](before_qo.png)
+![Image](after_qo.png)
 ```
 class Quotation(SellingController):
 
@@ -49,14 +49,14 @@ class Quotation(SellingController):
 ```
 
 ## How to do bench update for future
-[]~/frappe-bench/apps/erpnext$ git status
+- [ ]~/frappe-bench/apps/erpnext$ git status
 		modified:   erpnext/selling/doctype/sales_order/sales_order.py
 		modified:   erpnext/selling/doctype/quotation/quotation.py
 
-[]~/frappe-bench/apps/erpnext$ git stash
+- [ ]~/frappe-bench/apps/erpnext$ git stash
 
-[]Once update, is done i.e. ~/frappe-bench$ bench update
-[] Revert the stash changes back ~/frappe-bench/apps/erpnext$ git stash pop
+- [ ]Once update, is done i.e. ~/frappe-bench$ bench update
+- [ ] Revert the stash changes back ~/frappe-bench/apps/erpnext$ git stash pop
 
 #### License
 MIT
