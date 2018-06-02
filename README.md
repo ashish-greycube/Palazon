@@ -67,7 +67,7 @@ class Quotation(SellingController):
 3. Sales Taxes and Charges
 
 
-###Step 1 Create Terms and Conditions for Sales Order
+### Step 1 Create Terms and Conditions for Sales Order
 Name : Standard Terms Sales Order
 ```
 PRICE : IN SINGAPORE DOLLARS & SUBJECT TO {% if not taxes: %} 0 {%else%} {{taxes[0].rate}}{%endif%}% GST
@@ -76,7 +76,7 @@ DELIVERY TERM : 2 WEEKS
 
 PAYMENT TERM : 30 DAYS
 ```
-###Step 2: Standard Terms Quotation
+### Step 2: Standard Terms Quotation
 
 ```
 PRICE : IN SINGAPORE DOLLARS & SUBJECT TO {% if not taxes: %} 0 {%else%} {{taxes[0].rate}}{%endif%}% GST
@@ -87,9 +87,9 @@ PAYMENT TERM : 30 DAYS
 We look forward to receiving your purchase order soon.
 
 ```
-###Step 3: Go to Letterhead Add Header and Footer
+### Step 3: Go to Letterhead Add Header and Footer
 
-####Header
+#### Header
 ```
 <h1>WT WHITS TECHNOLOGIES</h1>
 <div><div>Blk 4012 , Ang Mo Kio Ave 10 #05-04A/04, Tech Place 1</div>
@@ -100,7 +100,7 @@ We look forward to receiving your purchase order soon.
 <div><br></div>
 ```
 
-####Footer
+#### Footer
 ```
 <div><div>{% set u = frappe.get_doc("User", frappe.user) %}&nbsp;<br></div>
 
@@ -110,7 +110,7 @@ We look forward to receiving your purchase order soon.
 <br></div>
 ```
 
-###Step 4: Go to Sales Taxes and Charges and make Singapore tax as default, it will load by default in new Sales Order /Quotation.
+### Step 4: Go to Sales Taxes and Charges and make Singapore tax as default, it will load by default in new Sales Order /Quotation.
 
 To see the print format in action, go to New Sales Order/Quotation and select respective Term in Terms and Condition field.
 
