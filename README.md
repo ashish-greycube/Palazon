@@ -1,24 +1,27 @@
-## Palazon
+# GreyCube Technologies Ltd.
 
-get BOM Item Rate based on summation of their individual line item
+## App Name - Palazon
+**Description** - Get BOM Item Rate based on summation of their individual line item for Sales Order and Quotation. Custom Print format which shows sub bom leaf items.
 
-#### License
+## How to install app
+-[] Go to bench directory i.e  /home/ubuntu/frappe-bench
+-[] ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
+-[] ~/frappe-bench$   bench --site site1.local install-app palazon
 
-MIT
+#### Edit sales_order.py and quotation.py
+Following line is to be added to sales_order.py and quotation.py
 
-#### How to do bench update
-~/frappe-bench/apps/erpnext$ git status
-		modified:   erpnext/selling/doctype/sales_order/sales_order.py
-~/frappe-bench/apps/erpnext$ git stash
+```
+	#start singapore - exploded bom
+	from palazon.api import set_missing_item_details, set_items_amount, set_items
+	#end singapore - exploded bom
 
-Once update, is done i.e.
-~/frappe-bench$ bench update
-
-Revert the stash changes back
-~/frappe-bench/apps/erpnext$ git stash pop
-
-#### Changes to be done apps/erpnext/erpnext/selling/doctype/sales_order.py
-
+```
+---
+apps/erpnext/selling/doctype/sales_order/sales_order.py
+![Image](before.so.png)
+![Image](after.so.png)
+```
 class SalesOrder(SellingController):
 	def __init__(self, *args, **kwargs):
 		super(SalesOrder, self).__init__(*args, **kwargs)
@@ -28,10 +31,13 @@ class SalesOrder(SellingController):
 	#end singapore - exploded bom
 	
 	def validate(self):
+		super(SalesOrder, self).validate()
 
-#### Changes to be done apps/erpnext/erpnext/selling/doctype/quotation.py
-
-
+```
+apps/erpnext/erpnext/selling/doctype/quotation.py
+![Image](before.qo.png)
+![Image](after.qo.png)
+```
 class Quotation(SellingController):
 
 	#start singapore - exploded bom
@@ -39,3 +45,18 @@ class Quotation(SellingController):
 	#end singapore - exploded bom
 		
 	def set_indicator(self):
+
+```
+
+## How to do bench update for future
+[]~/frappe-bench/apps/erpnext$ git status
+		modified:   erpnext/selling/doctype/sales_order/sales_order.py
+		modified:   erpnext/selling/doctype/quotation/quotation.py
+
+[]~/frappe-bench/apps/erpnext$ git stash
+
+[]Once update, is done i.e. ~/frappe-bench$ bench update
+[] Revert the stash changes back ~/frappe-bench/apps/erpnext$ git stash pop
+
+#### License
+MIT
