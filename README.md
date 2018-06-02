@@ -21,8 +21,10 @@ Following line is to be added to sales_order.py and quotation.py
 
 ```
 [a] apps/erpnext/selling/doctype/sales_order/sales_order.py
+
 sales_order.py before changes
 ![Image](before_so.png)
+
 sales_order.py after changes
 ![Image](after_so.png)
 ```
@@ -39,8 +41,10 @@ class SalesOrder(SellingController):
 
 ```
 [b] apps/erpnext/erpnext/selling/doctype/quotation.py
+
 quotation.py before changes
 ![Image](before_qo.png)
+
 quotation.py after changes
 ![Image](after_qo.png)
 ```
