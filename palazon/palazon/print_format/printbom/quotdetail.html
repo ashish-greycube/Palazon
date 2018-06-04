@@ -17,8 +17,8 @@
             <th>DWG Name</th>
             <th class="text-right">Qty</th>
             <th class="text-right">Unit</th>
-            <th class="text-right">Rate</th>
-            <th class="text-right">Amt SGD</th>
+            <th class="text-right">Rate($)</th>
+            <th class="text-right">Amt SGD($)</th>
         </tr>
         <tr style="background-color:rgba(201, 235, 245, 0.979) !important;font-weight: bold;">
             <td style="width: 2%;">{{ loop.index }}</td>
@@ -28,8 +28,8 @@
             <td style="width: 24%;">{{ row.item_name }}</td>
             <td style="width: 5%; text-align: right;">{{ row.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ row.uom or row.stock_uom }}</td>
-            <td style="width: 12%; text-align: right;">{{ row.get_formatted("rate", doc) }}</td>
-            <td style="width: 15%; text-align: right;">{{ row.get_formatted("amount", doc) }}</td>
+            <td style="width: 12%; text-align: right;">{{ row.rate }}</td>
+            <td style="width: 15%; text-align: right;">{{ row.amount}}</td>
         </tr>
         
         {% set count = namespace(a=1) %} 
@@ -58,8 +58,8 @@
                 <td style="width: 24%;">{{ detail.parent_bom }}</td>
                 <td style="width: 5%; text-align: right;">{{ parent_qty }}</td>
                 <td style="width: 5%; text-align: right;">{{ detail.parent_uom or detail.stock_uom }}</td>
-                <td style="width: 12%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0]/parent_qty,currency="$") }}</td>
-                <td style="width: 15%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0],currency="$") }}</td>
+                <td style="width: 12%; text-align: right;">{{ v_global[0]/parent_qty }}</td>
+                <td style="width: 15%; text-align: right;">{{ v_global[0]}}</td>
             </tr>
         {% set bom_count.b = bom_count.b + 1 %}
         {% endif %}
@@ -71,8 +71,8 @@
             <td style="width: 24%;">{{ detail.item_name }}</td>
             <td style="width: 5%; text-align: right;">{{ detail.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
-            <td style="width: 12%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
-            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
+            <td style="width: 12%; text-align: right;">{{ detail.rate}}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.amount}}</td>
         </tr>
         {% else %}
         <tr>
@@ -83,8 +83,8 @@
             <td style="width: 24%;">{{ detail.item_name }}</td>
             <td style="width: 5%; text-align: right;">{{ detail.qty }}</td>
             <td style="width: 5%; text-align: right;">{{ detail.uom or detail.stock_uom }}</td>
-            <td style="width: 12%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
-            <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
+            <td style="width: 12%; text-align: right;">{{ detail.rate}}</td>
+            <td style="width: 15%; text-align: right;">{{ detail.amount}}</td>
         </tr>
         {% endif %}
         {% set count.a = count.a + 1 %} 
