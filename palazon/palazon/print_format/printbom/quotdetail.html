@@ -86,7 +86,13 @@
             <td style="width: 12%; text-align: right;">{{ detail.get_formatted("rate", doc) }}</td>
             <td style="width: 15%; text-align: right;">{{ detail.get_formatted("amount", doc) }}</td>
         </tr>
-        {% endif %} {% set count.a = count.a + 1 %}  {% set bom_count.b = bom_count.b + 1 %} {% endif %} {% endfor %} {% endif %}
+        {% endif %}
+        {% set count.a = count.a + 1 %} 
+        {% endif %}
+
+        {% endfor %} 
+        {% set bom_count.b = bom_count.b + 1 %}
+        {% endif %}
     </tbody>
 </table>
 <div style="page-break-before: always;"></div>
