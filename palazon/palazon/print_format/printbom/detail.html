@@ -59,6 +59,8 @@
                 <td style="width: 12%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0]/parent_qty,currency="$") }}</td>
                 <td style="width: 15%; text-align: right;">{{ frappe.utils.fmt_money(v_global[0],currency="$") }}</td>
             </tr>
+            {% set bom_count.b = bom_count.b + 1 %} 
+        
         {% endif %}
 
         <tr>
@@ -88,7 +90,6 @@
         {% set count.a = count.a + 1 %} 
        
         {% endif %} 
-        {% set bom_count.b = bom_count.b + 1 %} 
         {% endfor %} 
         {% endif %}
     </tbody>
