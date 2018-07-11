@@ -132,6 +132,7 @@ Go to Print Section.
 - [ ] On new server with frappe and erpnext installed, install palazon app
 
 	 ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
+	 
 	 ~/frappe-bench$   bench --site site1.local install-app palazon
 - [ ] Restore DB from old server
 - [ ] Edit sales_order.py and quotation.py of erpnext (for detailed steps refer above)
