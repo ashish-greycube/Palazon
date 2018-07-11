@@ -130,6 +130,7 @@ Go to Print Section.
 
 ## How to restore existing app data to new server
 - [ ] On new server with frappe and erpnext installed, install palazon app
+
 	 ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
 	 ~/frappe-bench$   bench --site site1.local install-app palazon
 - [ ] Restore DB from old server
