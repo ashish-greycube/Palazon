@@ -128,5 +128,16 @@ Go to Print Section.
 - [ ] Once update, is done i.e. ~/frappe-bench$ bench update
 - [ ] Revert the stash changes back ~/frappe-bench/apps/erpnext$ git stash pop
 
+## How to restore existing app data to new server
+- [ ] On new server with frappe and erpnext installed, install palazon app
+	 ~/frappe-bench$   bench get-app palazon https://github.com/ashish-greycube/palazon
+	 ~/frappe-bench$   bench --site site1.local install-app palazon
+- [ ] Restore DB from old server
+- [ ] Edit sales_order.py and quotation.py of erpnext (for detailed steps refer above)
+- [ ] ~/frappe-bench$   bench --site site1.local migrate
+- [ ] ~/frappe-bench$   bench clear-cache
+- [ ] ~/frappe-bench$   bench restart
+
+
 #### License
 MIT
